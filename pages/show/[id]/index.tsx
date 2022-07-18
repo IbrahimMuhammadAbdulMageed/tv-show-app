@@ -7,6 +7,8 @@ import { includes, isEmpty } from 'lodash';
 import Show from '../../../components/Show';
 import ShowInfo from '../../../components/ShowInfo';
 import Loader from '../../../components/Loader';
+import MoreLikeThis from '../../../components/MoreLikeThis';
+import Message from '../../../components/Message';
 
 const ShowPage: NextPage = () => {
     const router = useRouter();
@@ -27,10 +29,13 @@ const ShowPage: NextPage = () => {
     }, [id]);
     return (
         <MainLayout title={'Dramatic | Show'}>
+            {show.isLoading && <Loader />}
+            {show.isError && <Message messageError={show.error} />}
             {!isEmpty(show.data) && show.data != undefined ? (
                 <>
                     <Show show={show.data} />
                     <ShowInfo show={show.data} />
+                    <MoreLikeThis genres={show.data.genres} />
                 </>
             ) : (
                 <Loader />

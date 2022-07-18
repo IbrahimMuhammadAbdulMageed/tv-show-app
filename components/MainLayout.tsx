@@ -4,7 +4,11 @@ import Header from './Header';
 import Head from 'next/head';
 import { motion } from 'framer-motion';
 
-const MainLayoutStyle = styled.div``;
+const MainLayoutStyle = styled.div`
+    main {
+        margin-bottom: 30px;
+    }
+`;
 interface IProps {
     title: string;
     children: React.ReactNode;

@@ -5,6 +5,7 @@ import { v4 as uuid4 } from 'uuid';
 import { Col, Container, Row } from 'react-bootstrap';
 import moment from 'moment';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const ShowStyle = styled.div`
     height: 900px;
@@ -72,28 +73,32 @@ const ShowStyle = styled.div`
             margin-bottom: 25px;
             display: flex;
             align-items: center;
-            button {
+            & > * {
                 border-radius: 30px;
                 padding: 15px 25px;
+
                 display: flex;
                 align-items: center;
                 border: none;
                 cursor: default;
                 margin-right: 20px;
                 background-color: #5c5c5c;
-                &:first-of-type {
+                &:first-child {
                     background-color: #5436a9;
                 }
-                &:last-of-type {
+                &:last-child {
                     margin-right: 0;
                 }
-                span {
+                span,
+                a {
                     font-family: 'Montserrat';
                     font-style: normal;
                     font-weight: 600;
                     font-size: 20px;
                     line-height: 24px;
                     color: #ffffff;
+                    display: block;
+                    border-radius: 30px;
                     &:first-of-type {
                         margin-right: 15px;
                     }
@@ -111,6 +116,14 @@ const ShowStyle = styled.div`
                     svg {
                         flex-shrink: 0;
                     }
+                }
+            }
+            & > a {
+                cursor: pointer;
+                transition: transform 0.25s;
+
+                &:hover {
+                    transform: scale(1.1);
                 }
             }
         }
@@ -219,25 +232,50 @@ const Show: React.FC<IProps> = (props) => {
                                 ))}
                             </div>
                             <div className="actions">
-                                <button>
-                                    <span>WATCH</span>
-                                    <svg
-                                        width="16"
-                                        height="17"
-                                        viewBox="0 0 16 17"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M2 2L14 8.6394L2 15.2788V2Z"
-                                            fill="white"
-                                            stroke="white"
-                                            strokeWidth="2.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                    </svg>
-                                </button>
+                                {isSlide ? (
+                                    <Link href={'/show/' + show.id}>
+                                        <a>
+                                            <span>WATCH</span>
+                                            <svg
+                                                width="16"
+                                                height="17"
+                                                viewBox="0 0 16 17"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    d="M2 2L14 8.6394L2 15.2788V2Z"
+                                                    fill="white"
+                                                    stroke="white"
+                                                    strokeWidth="2.5"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            </svg>
+                                        </a>
+                                    </Link>
+                                ) : (
+                                    <button>
+                                        <span>WATCH</span>
+                                        <svg
+                                            width="16"
+                                            height="17"
+                                            viewBox="0 0 16 17"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M2 2L14 8.6394L2 15.2788V2Z"
+                                                fill="white"
+                                                stroke="white"
+                                                strokeWidth="2.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </button>
+                                )}
+
                                 <button>
                                     <span>MY LIST</span>
                                     <span className={'addIcon'}>+</span>
