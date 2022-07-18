@@ -4,7 +4,7 @@ import { IShow } from '../models/IShow';
 import { Col, Container, Row } from 'react-bootstrap';
 import Image from 'next/image';
 import { useGetCastQuery } from '../store/show/getCast';
-import { isEmpty, sampleSize } from 'lodash';
+import { isEmpty, sampleSize, slice } from 'lodash';
 import { v4 as uuid4 } from 'uuid';
 import Loader from './Loader';
 import Message from './Message';
@@ -144,7 +144,7 @@ const ShowInfo: React.FC<IProps> = (props) => {
     const [isCanShowMore, setIsCanShowMore] = useState<boolean>(false);
     useEffect(() => {
         if (!isEmpty(cast.data) && cast.data != undefined) {
-            setCastList(sampleSize(cast.data, numberOfCastList));
+            setCastList(slice(cast.data, 0, numberOfCastList));
             if (numberOfCastList >= cast.data.length) {
                 setIsCanShowMore(false);
             } else {
