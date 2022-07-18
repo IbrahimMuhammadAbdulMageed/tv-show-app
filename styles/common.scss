@@ -1,0 +1,30 @@
+body {
+    background-color: black;
+}
+
+input[type=text] {
+    background-color: #3B567D;
+    border-radius: 18.5px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    color: #A2B3CD;
+border-color: transparent;
+    padding: 8px 50px 8px 19px;
+    transition: color 0.25s;
+    &:focus, &:focus-visible {
+        box-shadow: none;
+        outline: none;
+        border-color: transparent;
+        background-color: #3B567D;
+        color: white;
+    }
+}
+
+.cover {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
