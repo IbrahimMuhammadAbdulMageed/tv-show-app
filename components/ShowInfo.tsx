@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { IShow } from '../models/IShow';
 import { Col, Container, Row } from 'react-bootstrap';
 import Image from 'next/image';
 import { useGetCastQuery } from '../store/show/getCast';
-import { isEmpty } from 'lodash';
+import { isEmpty, sampleSize } from 'lodash';
 import { v4 as uuid4 } from 'uuid';
 import Loader from './Loader';
 import Message from './Message';
+import { ICast } from '../models/ICast';
 
 const ShowInfoStyle = styled.section`
     margin-top: -100px;
@@ -49,6 +50,7 @@ const ShowInfoStyle = styled.section`
             }
         }
         .cast {
+            position: relative;
             .person {
                 .image {
                     position: relative;
@@ -58,6 +60,7 @@ const ShowInfoStyle = styled.section`
                     overflow: hidden;
                     margin-bottom: 10px;
                 }
+
                 h3,
                 p {
                     font-family: 'Montserrat';
@@ -65,21 +68,66 @@ const ShowInfoStyle = styled.section`
                     font-weight: 700;
                     margin-bottom: 0;
                 }
+
                 h3 {
                     font-size: 14px;
                     line-height: 17px;
                     color: #ffffff;
                 }
+
                 p {
                     font-size: 15px;
                     line-height: 18px;
                     color: #a9a9a9;
                 }
             }
+
             .row {
                 margin-top: -24px;
+                margin-bottom: 30px;
+
                 & > div {
                     margin-top: 24px;
+                }
+            }
+
+            .showMore {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 10px 25px;
+                background-color: #5e47a1;
+                border-radius: 20px;
+                border: none;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: -71px;
+                span {
+                    font-family: 'Montserrat';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 18px;
+                    line-height: 22px;
+                    color: #e3e3e3;
+                    display: inline-block;
+                    margin-right: 10px;
+                    transition: color 0.25s;
+                }
+                svg {
+                    path {
+                        transition: stroke 0.25s;
+                    }
+                }
+                &:hover {
+                    span {
+                        color: #ffc907;
+                    }
+                    svg {
+                        path {
+                            stroke: #ffc907;
+                        }
+                    }
                 }
             }
         }
@@ -91,6 +139,22 @@ interface IProps {
 const ShowInfo: React.FC<IProps> = (props) => {
     const { show } = props;
     const cast = useGetCastQuery(show.id.toString());
+    const [castList, setCastList] = useState<ICast[]>([]);
+    const [numberOfCastList, setNumberOfCastList] = useState<number>(6);
+    const [isCanShowMore, setIsCanShowMore] = useState<boolean>(false);
+    useEffect(() => {
+        if (!isEmpty(cast.data) && cast.data != undefined) {
+            setCastList(sampleSize(cast.data, numberOfCastList));
+            if (numberOfCastList >= cast.data.length) {
+                setIsCanShowMore(false);
+            } else {
+                setIsCanShowMore(true);
+            }
+        }
+    }, [cast.data, numberOfCastList]);
+    const handleNumberOfCast = () => {
+        setNumberOfCastList(numberOfCastList + 6);
+    };
     return (
         <ShowInfoStyle>
             <Container>
@@ -138,9 +202,8 @@ const ShowInfo: React.FC<IProps> = (props) => {
                                             message={'No data was found'}
                                         />
                                     )}
-                                    {!isEmpty(cast.data) &&
-                                        cast.data != undefined &&
-                                        cast.data.map((item) => (
+                                    {!isEmpty(castList) &&
+                                        castList.map((item) => (
                                             <Col
                                                 key={uuid4()}
                                                 xl={2}
@@ -170,6 +233,29 @@ const ShowInfo: React.FC<IProps> = (props) => {
                                             </Col>
                                         ))}
                                 </Row>
+                                {isCanShowMore && (
+                                    <button
+                                        className={'showMore'}
+                                        onClick={handleNumberOfCast}
+                                    >
+                                        <span>Show More</span>
+                                        <svg
+                                            width="17"
+                                            height="10"
+                                            viewBox="0 0 17 10"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M15 1.99999L8.5 7.78367L2 2.00001"
+                                                stroke="#E7E7E7"
+                                                strokeWidth="2.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </button>
+                                )}
                             </div>
                         </Col>
                     </Row>
