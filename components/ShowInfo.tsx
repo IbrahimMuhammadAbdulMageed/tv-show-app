@@ -143,6 +143,9 @@ const ShowInfo: React.FC<IProps> = (props) => {
     const [numberOfCastList, setNumberOfCastList] = useState<number>(6);
     const [isCanShowMore, setIsCanShowMore] = useState<boolean>(false);
     useEffect(() => {
+        setNumberOfCastList(6);
+    }, [show]);
+    useEffect(() => {
         if (!isEmpty(cast.data) && cast.data != undefined) {
             setCastList(slice(cast.data, 0, numberOfCastList));
             if (numberOfCastList >= cast.data.length) {
