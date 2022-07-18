@@ -9,6 +9,7 @@ import { v4 as uuid4 } from 'uuid';
 import Loader from './Loader';
 import Message from './Message';
 import { ICast } from '../models/ICast';
+import TextTruncate from 'react-text-truncate';
 
 const ShowInfoStyle = styled.section`
     margin-top: -100px;
@@ -230,8 +231,20 @@ const ShowInfo: React.FC<IProps> = (props) => {
                                                             layout={'fill'}
                                                         />
                                                     </div>
-                                                    <h3>{item.person.name}</h3>
-                                                    <p>{item.character.name}</p>
+                                                    <TextTruncate
+                                                        line={1}
+                                                        element={'h3'}
+                                                        truncateText="…"
+                                                        text={item.person.name}
+                                                    />
+                                                    <TextTruncate
+                                                        line={1}
+                                                        element={'p'}
+                                                        truncateText="…"
+                                                        text={
+                                                            item.character.name
+                                                        }
+                                                    />
                                                 </div>
                                             </Col>
                                         ))}
